@@ -1,0 +1,90 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    background: #f3f4f6;
+    padding: 20px;
+    text-align: center;
+    color: #2563eb;
+}
+
+/* CARD SECTIONS */
+.card {
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 15px;
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* GRID */
+.grid-demo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.grid-demo div {
+    background-color: #4f46e5;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* FOOTER */
+footer {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .grid-demo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    body {
+        padding: 10px;
+    }
+}
