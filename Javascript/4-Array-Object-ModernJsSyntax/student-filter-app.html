@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Filter App</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 24px; }
+        .student-card { border: 1px solid #ddd; border-radius: 8px;
+                        padding: 12px; margin: 8px 0; }
+        .pass { background: #d4edda; }
+        .fail { background: #f8d7da; }
+    </style>
+
+</head>
+<body>
+    <h1>Student Filter App</h1>
+    <button id='showAll'>Show All</button>
+    <button id='showPassed'>Show Passed Only</button>
+    <button id='showFailed'>Show Failed Only</button>
+    <div id='studentList'></div>
+
+    <script>
+        const students = [
+            { name: 'Rahul',  marks: 85, city: 'Delhi' },
+            { name: 'Priya',  marks: 22, city: 'Mumbai' },
+            { name: 'Ankit',  marks: 78, city: 'Bangalore' },
+            { name: 'Sneha',  marks: 30, city: 'Chennai' },
+            { name: 'Vikram', marks: 91, city: 'Hyderabad' },
+            { name: 'Pooja',  marks: 55, city: 'Pune' }
+        ];
+
+        function displayStudents(list){
+            const container = document.querySelector('#studentList')
+            container.innerHTML = ""
+
+            const sortedStudentByMarks = [...list].sort((a, b) => b.marks - a.marks)
+
+            sortedStudentByMarks.forEach(({name, marks, city}) => {
+                const status = marks < 33 ? 'fail' : 'pass';
+                const cards = `
+                    <div class='student-card ${status}'>
+                        <strong>${name}</strong> — ${city}<br/>
+                        Marks: ${marks} | ${marks >= 50 ? 'PASSED ✅' : 'FAILED ❌'}
+                    </div>
+                `;
+
+                container.innerHTML += cards
+
+            })
+
+            document.querySelector('#showAll')
+            .addEventListener("click", () => displayStudents(students))
+
+            document.querySelector('#showPassed')
+            .addEventListener("click", () => displayStudents(students.filter(stud => stud.marks >=33)))
+            
+            document.querySelector('#showFailed')
+            .addEventListener("click", () => displayStudents(students.filter(stud => stud.marks < 33)))
+        }
+
+        displayStudents(students)
+    </script>
+
+</body>
+</html>
