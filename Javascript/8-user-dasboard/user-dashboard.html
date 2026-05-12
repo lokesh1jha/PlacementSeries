@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>User Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 24px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            color: #1a1a18;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #status {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        #status.error {
+            color: #cc0000;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+            color: #1a1a18;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .card .email {
+            color: #0066cc;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            height: 100px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>User Dashboard</h1>
+    <input type='text' id='searchInput' placeholder='Search users by name...' />
+    <div id='status'>Loading users...</div>
+    <div class='grid' id='userGrid'></div>
+
+    <script>
+        const API_URL = 'https://jsonplaceholder.typicode.com/users'
+        let allUsers = []
+
+        function showSkeletons() {
+            const grid = document.querySelector('#userGrid')
+            grid.innerHTML = Array(6).fill('<div class="skeleton"></div>').join('')
+        }
+
+        // Render the Cards
+        function renderUsers(users) {
+            const grid = document.querySelector('#userGrid')
+            const status = document.querySelector('#status')
+
+            if (users.length === 0) {
+                grid.innerHTML = '<p>No User Found</p>';
+                status.textContent = '0 User shown';
+                return
+            }
+
+            status.textContent = `Showing ${users.length} users`;
+            status.className = '';
+
+            grid.innerHTML = users.map(user => `
+                <div class = 'card'>
+                    <h3>${user.name}</h3>
+                    <p class='email'>${user.email}</p>
+                    <p>${user.address.city}</p>
+                    <p>${user.website}</p>
+                </div>
+                    `).join('')
+        }
+
+        async function fetchUsers() {
+            const status = document.querySelector('#status');
+            showSkeletons();
+            try {
+                const usersData = await fetch(API_URL);
+
+                if (!usersData.ok) {
+                    throw new Error("Failed to fetch users");
+                }
+
+                allUsers = await usersData.json();
+                
+                renderUsers(allUsers);
+            }
+            catch (error) {
+                console.log("Failed to call fetch user api", error);
+                status.textContent = `Error : ${error.message}. Try Again`;
+                status.className = 'error';
+                document.querySelector('#useGrid').innerHTML = '';
+            }
+        }
+
+
+        document.querySelector('#searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filteredUsers = allUsers.filter(user => 
+                user.name.toLowerCase().includes(query)
+            );
+            renderUsers(filteredUsers)
+        })
+        fetchUsers()
+    </script>
+</body>
+
+</html>
