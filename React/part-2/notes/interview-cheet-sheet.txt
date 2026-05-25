@@ -1,0 +1,8 @@
+useState returns [currentValue, setterFunction]. Called with initial value. Component re-renders every time setter is called with a new value.
+Never mutate state directly. Always use the setter function. Direct mutation does not trigger re-render.
+Functional update form: setState(prev => prev + 1). Use when new state depends on previous state to avoid stale state bugs.
+Object/array state: always create a new reference. Use spread: { ...obj, key: val } or [...arr, newItem]. Direct mutation breaks re-rendering.
+Controlled component: input value is tied to React state via value prop and onChange handler. Data flows: user types → onChange fires → state updates → React re-renders → input shows new value.
+event.preventDefault() stops default browser behaviour (like form reload). Must be called in the event handler.
+Conditional rendering: ternary for A or B, && for something or nothing (never use 0 &&), early return for guard clauses.
+Props vs state: props are external read-only input, state is internal mutable memory. Both trigger re-render when they change.
